@@ -25,6 +25,13 @@ class TriviaController {
     )
     return res.status(200).json(trivia)
   }
+
+  public async match(req: Request, res: Response): Promise<Response> {
+    const triviaList = await Trivia.aggregate([
+      { $sample: { size: parseInt(req.query.size) } }
+    ])
+    return res.json(triviaList)
+  }
 }
 
 export default new TriviaController()
