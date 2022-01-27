@@ -4,6 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 
 import usersRoutes from './routes/users'
+import triviaRoutes from './routes/trivia'
 
 class App {
   public express: express.Application
@@ -28,6 +29,7 @@ class App {
 
   private routes(): void {
     this.express.use(usersRoutes)
+    this.express.use(triviaRoutes)
   }
 }
 
