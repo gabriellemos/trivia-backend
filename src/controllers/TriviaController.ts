@@ -3,8 +3,8 @@ import { Trivia } from '../schemas/Trivia'
 
 class TriviaController {
   public async index(req: Request, res: Response): Promise<Response> {
-    const trivia = await Trivia.find()
-    return res.json(trivia)
+    const triviaList = await Trivia.find()
+    return res.json({ results: triviaList })
   }
 
   public async store(req: Request, res: Response): Promise<Response> {
@@ -30,7 +30,7 @@ class TriviaController {
     const triviaList = await Trivia.aggregate([
       { $sample: { size: parseInt(req.query.size) } }
     ])
-    return res.json(triviaList)
+    return res.json({ results: triviaList })
   }
 }
 
