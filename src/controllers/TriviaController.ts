@@ -1,23 +1,29 @@
 import { Request, Response } from 'express'
-import { Trivia } from '../schemas/Trivia'
+import { Model } from 'mongoose'
+import Query from '../interfaces/Query'
+import { Trivia, TriviaModel } from '../schemas/Trivia'
+import { BaseController } from './BaseController'
 
-class TriviaController {
-  public async index(req: Request, res: Response): Promise<Response> {
-    const triviaList = await Trivia.find()
-    return res.json({ results: triviaList })
+class TriviaController extends BaseController<TriviaModel, Model<TriviaModel>> {
+  public constructor () {
+    super(Trivia)
   }
 
-  public async store(req: Request, res: Response): Promise<Response> {
+  public index = async (req: Request, res: Response): Promise<Response> => {
+    return res.json(await this.paginate(req.query as Query))
+  }
+
+  public store = async (req: Request, res: Response): Promise<Response> => {
     const trivia = await Trivia.create(req.body)
     return res.status(201).json(trivia)
   }
 
-  public async delete(req: Request, res: Response): Promise<Response> {
+  public delete = async (req: Request, res: Response): Promise<Response> => {
     await Trivia.remove({ _id: req.params.id })
     return res.status(200).send()
   }
 
-  public async update(req: Request, res: Response): Promise<Response> {
+  public update = async (req: Request, res: Response): Promise<Response> => {
     const trivia = await Trivia.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
@@ -26,7 +32,7 @@ class TriviaController {
     return res.status(200).json(trivia)
   }
 
-  public async match(req: Request, res: Response): Promise<Response> {
+  public match = async (req: Request, res: Response): Promise<Response> => {
     const triviaList = await Trivia.aggregate([
       { $sample: { size: parseInt(req.query.size) } }
     ])
