@@ -19,25 +19,28 @@ export abstract class BaseController<
   }
 
   public index = async (req: Request, res: Response): Promise<Response> => {
-    return res.json(await this.paginate(req.query as Query))
-  }
+    try {
+      const query = req.query as Query
+      const { page: _page = '1', size: _size = '10', ...conditions } = query
+      const count = await this.model.countDocuments(conditions)
+      const [page, size] = [parseInt(_page), parseInt(_size)]
 
-  protected paginate = async (query: Query): Promise<Results<TDocument>> => {
-    const { page: _page = '1', size: _size = '10', ...conditions } = query
-    const count = await this.model.countDocuments(conditions)
-    const [page, size] = [parseInt(_page), parseInt(_size)]
+      const results = await this.model
+        .find(conditions)
+        .skip(size * (page - 1))
+        .limit(size)
 
-    const results = await this.model
-      .find(conditions)
-      .skip(size * (page - 1))
-      .limit(size)
+      const response: Results<TDocument> = {
+        page,
+        size,
+        content: results,
+        totalItens: count,
+        totalPages: Math.ceil(count / size)
+      }
 
-    return {
-      page,
-      size,
-      content: results,
-      totalItens: count,
-      totalPages: Math.ceil(count / size)
+      return res.status(200).json(response)
+    } catch (err) {
+      return this.handleError(err, res)
     }
   }
 
@@ -124,6 +127,26 @@ export abstract class BaseController<
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected preDelete = async (model: TDocument) => {}
 
+  /**
+   * Convert data received from body to an object of type T.
+   *
+   * @param body request body
+   * @returns converted object
+   */
+  protected abstract adjust: (body: unknown) => Promise<T>
+
+  /**
+   * Validate object of type T.
+   */
+  protected abstract validate: (model: T) => Promise<void>
+
+  /**
+   * Handle different kinds of errors to an acceptable response.
+   *
+   * @param err error to be handled
+   * @param res response
+   * @returns response
+   */
   private handleError = (err: unknown, res: Response): Response => {
     if (err instanceof MongooseError.ValidationError) {
       const mongoError = err as MongooseError.ValidationError
@@ -138,7 +161,4 @@ export abstract class BaseController<
     }
     return res.status(500).json(UNEXPECTED_ERROR)
   }
-
-  protected abstract adjust: (body: unknown) => Promise<T>
-  protected abstract validate: (model: T) => Promise<void>
 }
