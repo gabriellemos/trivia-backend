@@ -7,15 +7,29 @@ export interface TriviaModel extends TriviaInterface, Document {}
 
 const TriviaSchema = new Schema(
   {
-    category: String,
+    category: {
+      type: String,
+      required: [true, 'required-field']
+    },
     type: {
       type: String,
-      enum: Object.values(TriviaType)
+      required: [true, 'required-field'],
+      enum: {
+        values: Object.values(TriviaType),
+        message: 'invalid-type'
+      }
     },
-    question: String,
-    correctAnswer: String,
+    question: {
+      type: String,
+      required: [true, 'required-field']
+    },
+    correctAnswer: {
+      type: String,
+      required: [true, 'required-field']
+    },
     incorrectAnswers: {
-      type: [String]
+      type: [String],
+      required: [true, 'required-field']
     }
   },
   {
