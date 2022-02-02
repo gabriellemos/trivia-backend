@@ -3,9 +3,9 @@ import { Model } from 'mongoose'
 import { ValidationError } from '../domain/Errors'
 import { TriviaInterface } from '../domain/interface/Trivia'
 import { Trivia, TriviaModel } from '../domain/model/Trivia'
-import { BaseController } from './BaseController'
+import { CrudController } from './CrudController'
 
-class TriviaController extends BaseController<
+class TriviaController extends CrudController<
   TriviaInterface,
   TriviaModel,
   Model<TriviaModel>

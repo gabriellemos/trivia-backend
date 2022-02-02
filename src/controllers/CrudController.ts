@@ -7,7 +7,7 @@ import * as Errors from '../domain/Errors'
 
 const UNEXPECTED_ERROR = Object.freeze({ code: 'unexpected-error' })
 
-export abstract class BaseController<
+export abstract class CrudController<
   T,
   TDocument extends T & Document,
   TModel extends Model<TDocument>
