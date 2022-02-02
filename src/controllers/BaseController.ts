@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { Document, Model, Error as MongooseError } from 'mongoose'
 
-import Query from '../interfaces/Query'
-import { Results } from '../interfaces/Results'
-import * as Errors from '../interfaces/Errors'
+import Query from '../domain/interface/Query'
+import { Results } from '../domain/interface/Results'
+import * as Errors from '../domain/Errors'
 
 const UNEXPECTED_ERROR = Object.freeze({ code: 'unexpected-error' })
 

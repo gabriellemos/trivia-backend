@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { Model } from 'mongoose'
-import { TriviaInterface } from '../interfaces/Trivia'
-import { ValidationError } from '../interfaces/Errors'
 
-import { Trivia, TriviaModel } from '../schemas/Trivia'
+import { ValidationError } from '../domain/Errors'
+import { TriviaInterface } from '../domain/interface/Trivia'
+import { Trivia, TriviaModel } from '../domain/model/Trivia'
 import { BaseController } from './BaseController'
 
 class TriviaController extends BaseController<

@@ -1,4 +1,4 @@
-import { TriviaType } from '../enum/TriviaType'
+import { TriviaType } from '../TriviaType'
 
 export interface TriviaInterface {
   category: string

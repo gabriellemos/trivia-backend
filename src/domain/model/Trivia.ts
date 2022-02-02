@@ -1,7 +1,7 @@
 import { Document, Schema, Model, model } from 'mongoose'
 
-import { TriviaType } from '../enum/TriviaType'
-import { TriviaInterface } from '../interfaces/Trivia'
+import { TriviaType } from '../TriviaType'
+import { TriviaInterface } from '../interface/Trivia'
 
 export interface TriviaModel extends TriviaInterface, Document {}
 
