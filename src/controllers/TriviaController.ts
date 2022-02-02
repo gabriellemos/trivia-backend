@@ -28,8 +28,7 @@ class TriviaController extends BaseController<
 
   protected validate = async (model: TriviaInterface) => {
     // Other validations are made on insert
-    // TODO: Must check for null / undefined
-    if (!model.incorrectAnswers) {
+    if (model.incorrectAnswers == null) {
       throw new ValidationError('incorrectAnswers', 'required-field')
     } else if (model.incorrectAnswers instanceof Array) {
       if (model.incorrectAnswers.length === 0) {
