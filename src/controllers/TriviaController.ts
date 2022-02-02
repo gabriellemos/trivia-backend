@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import { Model } from 'mongoose'
 
 import { ValidationError } from '../domain/Errors'
@@ -13,13 +12,6 @@ class TriviaController extends BaseController<
 > {
   public constructor () {
     super(Trivia)
-  }
-
-  public match = async (req: Request, res: Response): Promise<Response> => {
-    const triviaList = await Trivia.aggregate([
-      { $sample: { size: parseInt(req.query.size) } }
-    ])
-    return res.json({ results: triviaList })
   }
 
   protected adjust = (body: unknown) => {
