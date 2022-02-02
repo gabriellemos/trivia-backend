@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 
 import usersRoutes from './routes/users'
 import triviaRoutes from './routes/trivia'
+import matchRoutes from './routes/match'
 
 class App {
   public express: express.Application
@@ -30,6 +31,7 @@ class App {
   private routes (): void {
     this.express.use(usersRoutes)
     this.express.use(triviaRoutes)
+    this.express.use(matchRoutes)
   }
 }
 
